@@ -27,11 +27,18 @@
 #   http://collectd.org/documentation/manpages/collectd-python.5.shtml
 #
 
+import signal
 import collectd
 import datetime
 import traceback
 import subprocess
 
+# Override signal handling so we don't cause errors with reaped processes below
+def init():
+    signal.signal(signal.SIGCHLD, signal.SIG_DFL)
+    collectd.register_init(init)
+
+# Monkey-patch subprocess.check_output into Python 2.6!
 if "check_output" not in dir( subprocess ):
     def f(*popenargs, **kwargs):
         if 'stdout' in kwargs:
