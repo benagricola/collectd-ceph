@@ -36,7 +36,7 @@ import subprocess
 # Override signal handling so we don't cause errors with reaped processes below
 def init():
     signal.signal(signal.SIGCHLD, signal.SIG_DFL)
-    collectd.register_init(init)
+collectd.register_init(init)
 
 # Monkey-patch subprocess.check_output into Python 2.6!
 if "check_output" not in dir( subprocess ):
